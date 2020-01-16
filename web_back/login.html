@@ -28,38 +28,54 @@
                 <input type="button" id="btnlogin" class="input_sub" value="登 录">
             </form>
         </div>
-    </div> 
+    </div>
 
     <script src="./js/jquery-1.12.4.min.js"></script>
+
+    <script>
+        var user = {
+            login: function (myname,mypassword) {
+                $.post('http://192.168.172.82:8000/admin/login', {
+                    'user_name': myname,
+                    'password': mypassword
+                }).then(function (res) {
+                    // console.log(res);    
+                    if (res.code === 200) {
+                        window.location.href = "./index.html"
+                    } else {
+                        alert(res.msg)
+                    }
+                })
+            }
+        }
+    </script>
 
     <script>
         /*  思路    1.获取用户填写信息  检测内容
                     2.调用接口
                     3.跳转
         */
-        $('#btnlogin').click(function(){
+        $('#btnlogin').click(function () {
             var username = $('#username').val().trim()
             var password = $('#password').val().trim()
             // 清空功能
             // $('#username').val('')
             // $('#password').val('')
-            if(username.length == 0 | password == 0){
+            if (username.length == 0 | password == 0) {
                 alert('账号信息不能为空')
                 return;
             }
-            $.post('http://192.168.172.82:8000/admin/login',{
-                'user_name':username,
-                'password': password
-            }).then(function(res){
-                // console.log(res);    
-                if(res.code === 200){
-                   window.location.href = "./index.html"
-                } 
-                else {
-                    alert(res.msg)
-                }        
-            })
+            // 管理员登陆
+            user.login(username,password)
         })
+        // $('.login_form').on('keydown','input',function(e){
+        //     console.log(e.keyCode);
+            
+        //     if(e.keyCode == 13){
+        //         user.login(username,password)
+        //     }
+        // })
     </script>
 </body>
+
 </html>
