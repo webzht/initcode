@@ -23,11 +23,43 @@
             <form class="login_form">
                 <i class="iconfont icon-user"></i>
                 <i class="iconfont icon-key"></i>
-                <input type="text" class="input_txt" placeholder="邮箱/手机号">
-                <input type="password" class="input_pass" placeholder="密码">
-                <input type="submit" class="input_sub" value="登 录">
+                <input type="text" id="username" class="input_txt" placeholder="用户名">
+                <input type="password" id="password" class="input_pass" placeholder="密码">
+                <input type="button" id="btnlogin" class="input_sub" value="登 录">
             </form>
         </div>
     </div> 
+
+    <script src="./js/jquery-1.12.4.min.js"></script>
+
+    <script>
+        /*  思路    1.获取用户填写信息  检测内容
+                    2.调用接口
+                    3.跳转
+        */
+        $('#btnlogin').click(function(){
+            var username = $('#username').val().trim()
+            var password = $('#password').val().trim()
+            // 清空功能
+            // $('#username').val('')
+            // $('#password').val('')
+            if(username.length == 0 | password == 0){
+                alert('账号信息不能为空')
+                return;
+            }
+            $.post('http://192.168.172.82:8000/admin/login',{
+                'user_name':username,
+                'password': password
+            }).then(function(res){
+                // console.log(res);    
+                if(res.code === 200){
+                   window.location.href = "./index.html"
+                } 
+                else {
+                    alert(res.msg)
+                }        
+            })
+        })
+    </script>
 </body>
 </html>
