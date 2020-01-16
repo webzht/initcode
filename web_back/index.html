@@ -113,45 +113,36 @@
         }
     </script>
 
-    <script>
-        var user = {
-            logout: function () {
-                $.post('http://192.168.172.82:8000/admin/logout')
-                    .then(function (res) {
-                        if (res.code === 200) {
-                            window.location.href = "./login.html"
-                        } else {
-                            alert(res.msg)
-                        }
-                    })
-            },
-            userInfo: function () {
-                $.get('http://192.168.172.82:8000/admin/getuser')
-                    .then(function (res) {
-                        // console.log(res);
-                        if (res.code === 200) {
-                            //   console.log(res.data.nickname,res.data.user_pic);
-
-                            $('#user_name').text(res.data.nickname)
-                            $('.user_img').attr("src", res.data.user_pic)
-                        } else {
-                            alert(res.msg)
-                        }
-                    })
-            }
-        }
-    </script>
-
+    <script src="./js/util/config.js"></script>
+    <script src="./js/util/request.js"></script>
     <script>
         //思路： 1.获取 2.调用接口 3.跳转
         $('#btnlogout').click(function () {
             // 管理员注销
             user.logout()
+                .then(function (res) {
+                    if (res.code === 200) {
+                        window.location.href = "./login.html"
+                    } else {
+                        alert(res.msg)
+                    }
+                })
         })
 
         //思路： 1.发送请求 2.dom修改
         // 获取管理员信息
         user.userInfo()
+            .then(function (res) {
+                // console.log(res);
+                if (res.code === 200) {
+                    //   console.log(res.data.nickname,res.data.user_pic);
+
+                    $('#user_name').text(res.data.nickname)
+                    $('.user_img').attr("src", res.data.user_pic)
+                } else {
+                    alert(res.msg)
+                }
+            })
     </script>
 </body>
 
